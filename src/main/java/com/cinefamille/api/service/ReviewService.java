@@ -41,4 +41,12 @@ public class ReviewService {
     public List<Review> getReviewsByUser(User user) {
         return reviewRepository.findByUser(user);
     }
+
+    public Review updateReview(Long id, Review updatedReview) {
+        Review existing = reviewRepository.findById(id).orElseThrow();
+        existing.setRating(updatedReview.getRating());
+        existing.setComment(updatedReview.getComment());
+        existing.setPhotoUrl(updatedReview.getPhotoUrl());
+        return reviewRepository.save(existing);
+    }
 }
