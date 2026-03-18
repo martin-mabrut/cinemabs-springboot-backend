@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -30,22 +31,14 @@ public class MovieController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
-        Optional<Movie> movie = movieService.getMovieById(id);
-        if (!movie.isPresent()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Movie oneMovie = movie.get();
-            return ResponseEntity.ok(oneMovie);
-        }
+        Movie movie = movieService.getMovieById(id);
+        return ResponseEntity.ok(movie);
     }
 
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<Review>> getReviewsByMovie(@PathVariable Long id) {
-        Optional<Movie> movie = movieService.getMovieById(id);
-        if (movie.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        List<Review> reviews = reviewService.getReviewsByMovie(movie.get());
+        Movie movie = movieService.getMovieById(id);
+        List<Review> reviews = reviewService.getReviewsByMovie(movie);
         return ResponseEntity.ok(reviews);
     }
 
@@ -57,7 +50,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
+    public ResponseEntity<Movie> createMovie(@Valid @RequestBody Movie movie) {
         Movie createdMovie = movieService.createMovie(movie);
         return ResponseEntity.status(201).body(createdMovie);
     }

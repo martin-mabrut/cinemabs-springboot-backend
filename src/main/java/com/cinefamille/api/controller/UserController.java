@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,31 +31,25 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        if (!user.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(user.get());
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<Review>> getUserReviews(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        if (!user.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        List<Review> reviews = reviewService.getReviewsByUser(user.get());
+        User user = userService.getUserById(id);
+        List<Review> reviews = reviewService.getReviewsByUser(user);
         return ResponseEntity.ok(reviews);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User userCreated = userService.createUser(user);
         return ResponseEntity.status(201).body(userCreated);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         User userUpdated = userService.updateUser(id, user);
         return ResponseEntity.ok(userUpdated);
     }

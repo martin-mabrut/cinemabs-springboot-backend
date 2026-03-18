@@ -5,7 +5,8 @@ import com.cinefamille.api.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+import com.cinefamille.api.exception.ResourceNotFoundException;
 
 @Service
 public class MovieService {
@@ -20,8 +21,9 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Optional<Movie> getMovieById(Long id) {
-        return movieRepository.findById(id);
+    public Movie getMovieById(Long id) {
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Film non trouvé avec l'id : " + id));
     }
 
     public Movie createMovie(Movie movie) {

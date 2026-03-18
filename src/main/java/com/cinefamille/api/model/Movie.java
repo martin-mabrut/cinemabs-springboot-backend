@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import jakarta.validation.constraints.*;
+
 @Entity
 public class Movie {
 
@@ -12,9 +14,17 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Le titre est obligatoire")
     private String title;
+
+    @NotBlank(message = "Le genre est obligatoire")
     private String genre;
+
+    @NotNull(message = "L'année est obligatoire")
+    @Min(value = 1888, message = "Veuillez renseigner une année supérieure à 1888")
+    @Max(value = 2100, message = "Veuillez renseigner une année inférieure à 2100")
     private Integer year;
+
     private String synopsis;
     private String imageUrl;
 
