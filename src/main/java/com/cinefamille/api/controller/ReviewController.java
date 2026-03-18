@@ -9,7 +9,7 @@ import com.cinefamille.api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -30,16 +30,12 @@ public class ReviewController {
     public ResponseEntity<Review> createReview(
             @RequestParam Long movieId,
             @RequestParam Long userId,
-            @RequestBody Review review) {
+            @Valid @RequestBody Review review) {
 
-        Optional<Movie> movie = movieService.getMovieById(movieId);
-        Optional<User> user = userService.getUserById(userId);
+        Movie movie = movieService.getMovieById(movieId);
+        User user = userService.getUserById(userId);
 
-        if (movie.isEmpty() || user.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Review reviewFinal = new Review(user.get(), movie.get(), review.getRating(), review.getPhotoUrl());
+        Review reviewFinal = new Review(user, movie, review.getRating(), review.getPhotoUrl());
         reviewFinal.setComment(review.getComment());
         Review created = reviewService.createReview(reviewFinal);
         return ResponseEntity.status(201).body(created);
@@ -47,7 +43,7 @@ public class ReviewController {
 
     // PUT /api/reviews/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long id, @RequestBody Review review) {
+    public ResponseEntity<Review> updateReview(@PathVariable Long id, @Valid @RequestBody Review review) {
         Review reviewUpdated = reviewService.updateReview(id, review);
         return ResponseEntity.ok(reviewUpdated);
     }

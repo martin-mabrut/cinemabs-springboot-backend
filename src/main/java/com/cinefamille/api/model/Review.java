@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
+import jakarta.validation.constraints.*;
+
 @Entity
 public class Review {
 
@@ -24,8 +26,10 @@ public class Review {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-
+    @Min(value = 1, message = "La note doit être comprise entre 1 et 10")
+    @Max(value = 10, message = "La note doit être comprise entre 1 et 10")
     private int rating;
+
     private String comment;
     private String photoUrl;
 

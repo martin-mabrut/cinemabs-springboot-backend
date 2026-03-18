@@ -5,7 +5,8 @@ import com.cinefamille.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+import com.cinefamille.api.exception.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -20,8 +21,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'id : " + id));
     }
 
     public User createUser(User user) {
@@ -33,7 +35,8 @@ public class UserService {
     }
 
     public User updateUser(Long id, User updatedUser) {
-        User existing = userRepository.findById(id).orElseThrow();
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("utilisateur non trouvé avec l'id : " + id));
         existing.setUsername(updatedUser.getUsername());
         existing.setEmail(updatedUser.getEmail());
         existing.setPassword(updatedUser.getPassword());

@@ -7,7 +7,8 @@ import com.cinefamille.api.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+import com.cinefamille.api.exception.ResourceNotFoundException;
 
 @Service
 public class ReviewService {
@@ -22,8 +23,9 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public Optional<Review> getReviewById(Long id) {
-        return reviewRepository.findById(id);
+    public Review getReviewById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Critique non trouvée avec l'id : " + id));
     }
 
     public Review createReview(Review review) {
@@ -43,7 +45,8 @@ public class ReviewService {
     }
 
     public Review updateReview(Long id, Review updatedReview) {
-        Review existing = reviewRepository.findById(id).orElseThrow();
+        Review existing = reviewRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Critique non trouvée avec l'id : " + id));
         existing.setRating(updatedReview.getRating());
         existing.setComment(updatedReview.getComment());
         existing.setPhotoUrl(updatedReview.getPhotoUrl());
