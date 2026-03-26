@@ -6,8 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import jakarta.validation.constraints.*;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,14 +17,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Veuillez renseigner un nom d'utilisateur")
     private String username;
 
-    @NotBlank(message = "Veuillez renseigner une adresse email")
-    @Email(message = "Veuillez renseigner une adresse email valide")
     private String email;
 
-    @NotBlank(message = "Veuillez renseigner un mot de passe")
     private String password;
 
     private boolean isPublic;
