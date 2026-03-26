@@ -1,7 +1,8 @@
 package com.cinefamille.api.controller;
 
-import com.cinefamille.api.model.Movie;
-import com.cinefamille.api.model.Review;
+import com.cinefamille.api.dto.MovieDto;
+import com.cinefamille.api.dto.ReviewDto;
+import com.cinefamille.api.dto.CreateMovieRequest;
 import com.cinefamille.api.service.MovieService;
 import com.cinefamille.api.service.ReviewService;
 import org.springframework.http.ResponseEntity;
@@ -24,34 +25,33 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
+    public ResponseEntity<List<MovieDto>> getAllMovies() {
+        List<MovieDto> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
-        Movie movie = movieService.getMovieById(id);
+    public ResponseEntity<MovieDto> getMovieById(@PathVariable Long id) {
+        MovieDto movie = movieService.getMovieById(id);
         return ResponseEntity.ok(movie);
     }
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<List<Review>> getReviewsByMovie(@PathVariable Long id) {
-        Movie movie = movieService.getMovieById(id);
-        List<Review> reviews = reviewService.getReviewsByMovie(movie);
+    public ResponseEntity<List<ReviewDto>> getReviewsByMovie(@PathVariable Long id) {
+        List<ReviewDto> reviews = reviewService.getReviewsByMovie(id);
         return ResponseEntity.ok(reviews);
     }
 
 
     @GetMapping("/genre/{genre}")
-    public ResponseEntity<List<Movie>> getMoviesByGenre(@PathVariable String genre) {
-        List<Movie> movies = movieService.getMoviesByGenre(genre);
+    public ResponseEntity<List<MovieDto>> getMoviesByGenre(@PathVariable String genre) {
+        List<MovieDto> movies = movieService.getMoviesByGenre(genre);
         return ResponseEntity.ok(movies);
     }
 
     @PostMapping
-    public ResponseEntity<Movie> createMovie(@Valid @RequestBody Movie movie) {
-        Movie createdMovie = movieService.createMovie(movie);
+    public ResponseEntity<MovieDto> createMovie(@Valid @RequestBody CreateMovieRequest movie) {
+        MovieDto createdMovie = movieService.createMovie(movie);
         return ResponseEntity.status(201).body(createdMovie);
     }
 
