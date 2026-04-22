@@ -33,6 +33,7 @@ public class Movie {
     public String getImageUrl() { return imageUrl; }
 
     // Setters
+    public void setId(Long id) { this.id = id; } // used in tests only
     public void setTitle(String title) { this.title = title; }
     public void setGenre(String genre) { this.genre = genre; }
     public void setYear(Integer year) { this.year = year; }
