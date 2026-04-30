@@ -43,6 +43,7 @@ public class User {
     public boolean isPublic() { return isPublic; }
     public List<String> getFollowed() { return followed; }
 
+    public void setId(Long id) { this.id = id; } // used in tests only
     public void setUsername(String username) { this.username = username; }
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }

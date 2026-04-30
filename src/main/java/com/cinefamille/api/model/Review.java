@@ -50,6 +50,7 @@ public class Review {
     public String getPhotoUrl() { return photoUrl; }
 
 
+    public void setId(Long id) { this.id = id; } // used in tests only
     public void setRating(int rating) { this.rating = rating; }
     public void setComment(String comment) { this.comment = comment; }
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
